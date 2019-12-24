@@ -17,10 +17,19 @@
          contextName = "listdir:main.c">
          <PersistentStrings>
             <PersistentString
+               value = "strcmp(entry-&gt;d_name, &quot;.DS_Store&quot;)">
+            </PersistentString>
+            <PersistentString
                value = "strcmp(entry-&gt;d_name, &quot;DS_Store&quot;)">
             </PersistentString>
             <PersistentString
-               value = "strcmp(entry-&gt;d_name, &quot;.DS_Store&quot;)">
+               value = "basename(basec)">
+            </PersistentString>
+            <PersistentString
+               value = "readdir(opendir(name))">
+            </PersistentString>
+            <PersistentString
+               value = "basename(strdup(name))">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
