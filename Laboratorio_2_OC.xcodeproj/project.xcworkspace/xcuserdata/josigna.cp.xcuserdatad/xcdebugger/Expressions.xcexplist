@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "listFilesRecursively:main.c">
+         <PersistentStrings>
+            <PersistentString
+               value = "strcmp(dp-&gt;d_name, &quot;.&quot;)">
+            </PersistentString>
+            <PersistentString
+               value = "dp-&gt;d_name">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "listdir:main.c">
+         <PersistentStrings>
+            <PersistentString
+               value = "strcmp(entry-&gt;d_name, &quot;DS_Store&quot;)">
+            </PersistentString>
+            <PersistentString
+               value = "strcmp(entry-&gt;d_name, &quot;.DS_Store&quot;)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>
