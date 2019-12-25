@@ -37,11 +37,11 @@ void contar(char* path, int margen, FILE* fp){
     DIR *dp;
     struct dirent *dir;
 
-      int i;
-      for(i = 1; i < 2; i++){
+      //int i;
+      //for(i = 1; i < 2; i++){
             dp = opendir(path);
-            if(dp == NULL)
-              continue;
+            //if(dp == NULL)
+              //continue;
             while((dir = readdir(dp)) != NULL){
                 if (strcmp(dir->d_name, ".") == 0 || strcmp(dir->d_name, "..") == 0 )
                     continue;
@@ -63,7 +63,7 @@ void contar(char* path, int margen, FILE* fp){
           
          printf("Directorio %s contiene: %d Carpetas y %d Archivos\n", bname, dirCount, fileCount);
           fprintf (fp, "Directorio %s contiene: %d Carpetas y %d Archivos\n", bname, dirCount, fileCount);
-      }
+      //}
 
     closedir(dp);
 }
