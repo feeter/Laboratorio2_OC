@@ -24,10 +24,88 @@
 #define _GNU_SOURCE         /* See feature_test_macros(7) */
 #include <string.h>
 
+#include <errno.h>
+
 char *gnu_basename(char *path)
 {
     char *base = strrchr(path, '/');
     return base ? base+1 : path;
+}
+
+void checkPermisos(const char* filepath, const char* path)
+{
+    char *basec, *bname, *bnamePath;
+    basec = strdup(filepath);
+    bname = gnu_basename(basec);
+    
+    basec = strdup(path);
+    bnamePath = gnu_basename(basec);
+    
+    
+    // Check read access
+    int returnval = 0;
+    returnval = access(filepath, R_OK);
+    
+    if (returnval == 0)
+        printf ("%s ubicado en %s tiene permisos de: Lectura .\n", bname, bnamePath);
+    else
+    {
+        if (errno == ENOENT)
+            printf ("%s No such file or directory.\n", bname);
+        else if (errno == EACCES)
+            printf ("%s Read Permission denied.\n", bname);
+    }
+    
+//    // Check write access
+//    returnval = 0;
+//    returnval = access (filepath, W_OK);
+//    if (returnval == 0)
+//    printf ("\n %s has Write permissions.!\n", bname);
+//    else
+//    {
+//    if (errno == ENOENT)
+//    printf ("%s No such file or directory.\n", bname);
+//    else if (errno == EACCES)
+//    printf ("%s Write Permission denied.\n", bname);
+//    }
+}
+
+void CheckDir(const char* name)
+{
+    DIR* dirActual;
+    struct dirent *entry;
+    //int carpetas = 0, archivos = 0;
+    char path[1024];
+
+
+    if (!(dirActual = opendir(name)))
+      return;
+
+    while ((entry = readdir(dirActual)) != NULL)
+    {
+      
+      if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0 )
+          continue;
+      
+      
+      if (entry->d_type == DT_DIR) {
+          
+          snprintf(path, sizeof(path), "%s/%s", name, entry->d_name); // concatena la ruta a la subcarpeta
+          //printf("%s\n", entry->d_name); // imprime el nombre de la carpeta actual por consola
+
+          
+          CheckDir(path);
+          
+      } else if (entry->d_type == DT_REG) {
+          char fullPath[1024];
+          snprintf(fullPath, sizeof(fullPath), "%s/%s", name, entry->d_name);
+          
+          checkPermisos(fullPath, name);
+      }
+
+    }
+
+    closedir(dirActual);
 }
 
 void contar(char* path, int margen, FILE* fp){
@@ -61,7 +139,7 @@ void contar(char* path, int margen, FILE* fp){
          bname = gnu_basename(basec);
            
           
-         printf("Directorio %s contiene: %d Carpetas y %d Archivos\n", bname, dirCount, fileCount);
+         //printf("Directorio %s contiene: %d Carpetas y %d Archivos\n", bname, dirCount, fileCount);
           fprintf (fp, "Directorio %s contiene: %d Carpetas y %d Archivos\n", bname, dirCount, fileCount);
       //}
 
@@ -124,7 +202,7 @@ void listdir(const char *name, int margen, FILE* fp)
             char path[1024];
             
             snprintf(path, sizeof(path), "%s/%s", name, entry->d_name); // concatena la ruta completa
-            printf("%*s%s\n", margen, "", entry->d_name); // imprime el nombre de la carpeta actual por consola
+            //printf("%*s%s\n", margen, "", entry->d_name); // imprime el nombre de la carpeta actual por consola
             fprintf(fp, "%*s%s\n", margen, "", entry->d_name); // escribe en el archivo fp el nombre de la carpeta actual
             
 
@@ -132,20 +210,15 @@ void listdir(const char *name, int margen, FILE* fp)
             listdir(path, 0, fp);
             
             char *basec, *bname;
-            
-
             basec = strdup(name);
             bname = gnu_basename(basec);
             
-            printf("%s\n", bname);
+            //printf("%s\n", bname);
             fprintf(fp, "%s\n", bname); // escribe en el archivo fp el nombre de la carpeta actual
             
             
-        } //else {
-       //     // Archivos
-       //     printf("%*s- %s\n", margen, "", entry->d_name);
-       //     fprintf(fp, "%*s- %s\n", margen, "", entry->d_name);
-        // }
+        }
+        
     }
     
     closedir(dirActual);
@@ -176,15 +249,15 @@ void getUserId(FILE* fp)
     else {
       //puts("getpwuid() returned the following info for your userid:");
       //printf("  pw_name  : %s\n",       p->pw_name);
-      printf("Id_usuario: %d ", (int) p->pw_uid);
+      //printf("Id_usuario: %d ", (int) p->pw_uid);
         fprintf (fp, "Id_usuario: %d ", (int) p->pw_uid);
       //printf("  pw_gid   : %d\n", (int) p->pw_gid);
       //printf("  pw_dir   : %s\n",       p->pw_dir);
       //printf("  pw_shell : %s\n",       p->pw_shell);
-      printf("Id_programa: %d\n", (int)   getpid());
+      //printf("Id_programa: %d\n", (int)   getpid());
         
         
-        fprintf (fp, "Id_programa: %d\n", (int)   getpid());
+        fprintf(fp, "Id_programa: %d\n", (int)   getpid());
 
     }
     
@@ -198,6 +271,8 @@ void getUserId(FILE* fp)
 int main(int argc, const char * argv[]) {
     char* dirParaAnalizar = "/Users/josigna.cp/Documents/USACH/Materias/Semestre 2/ORGANIZACIÓN DE COMPUTADORES/Laboratorio 2/";
     
+    
+    /** Archivo Recorrido.txt */
     FILE* fp = CrearArchivo("/Users/josigna.cp/Documents/USACH/Materias/Semestre 2/ORGANIZACIÓN DE COMPUTADORES/Recorrido.txt");
     
     getUserId(fp);
@@ -215,9 +290,15 @@ int main(int argc, const char * argv[]) {
 
     CerrarArchivo(fp);
     
+    /** Archivo Archivo.txt */
+    
+    fp = CrearArchivo("/Users/josigna.cp/Documents/USACH/Materias/Semestre 2/ORGANIZACIÓN DE COMPUTADORES/Archivo.txt");
 
-    
-    
+       getUserId(fp);
+    CheckDir(dirParaAnalizar);
+
+
+       CerrarArchivo(fp);
 
     
     

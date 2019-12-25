@@ -14,8 +14,8 @@
             filePath = "Laboratorio_2_OC/main.c"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "79"
-            endingLineNumber = "79"
+            startingLineNumber = "157"
+            endingLineNumber = "157"
             landmarkName = "ContDir(name, margen, fp, carpetas, archivos)"
             landmarkType = "9">
          </BreakpointContent>
@@ -30,8 +30,8 @@
             filePath = "Laboratorio_2_OC/main.c"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "88"
-            endingLineNumber = "88"
+            startingLineNumber = "166"
+            endingLineNumber = "166"
             landmarkName = "ContDir(name, margen, fp, carpetas, archivos)"
             landmarkType = "9">
          </BreakpointContent>
@@ -46,9 +46,57 @@
             filePath = "Laboratorio_2_OC/main.c"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "89"
-            endingLineNumber = "89"
+            startingLineNumber = "167"
+            endingLineNumber = "167"
             landmarkName = "ContDir(name, margen, fp, carpetas, archivos)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "1E5B659D-9FAE-45F2-A8F0-B3736E24A281"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Laboratorio_2_OC/main.c"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "298"
+            endingLineNumber = "298"
+            landmarkName = "main(argc, argv)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6AA05006-01B9-4393-AC65-E1624BE9005B"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Laboratorio_2_OC/main.c"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "103"
+            endingLineNumber = "103"
+            landmarkName = "CheckDir(name)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "2EA959A3-984A-4D02-88AD-63809272687F"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Laboratorio_2_OC/main.c"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "100"
+            endingLineNumber = "100"
+            landmarkName = "CheckDir(name)"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>

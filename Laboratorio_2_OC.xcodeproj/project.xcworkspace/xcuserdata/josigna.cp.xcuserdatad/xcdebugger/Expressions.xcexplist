@@ -3,6 +3,14 @@
    version = "1.0">
    <ContextStates>
       <ContextState
+         contextName = "CheckDir:main.c">
+         <PersistentStrings>
+            <PersistentString
+               value = "entry-&gt;d_name">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "listFilesRecursively:main.c">
          <PersistentStrings>
             <PersistentString
