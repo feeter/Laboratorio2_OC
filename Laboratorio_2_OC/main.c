@@ -30,6 +30,79 @@ char *gnu_basename(char *path)
     return base ? base+1 : path;
 }
 
+void contar(char* path, int margen, FILE* fp){
+    //count the number of files and subdirectories
+    int fileCount = 0;
+    int dirCount = 0;
+    DIR *dp;
+    struct dirent *dir;
+
+      int i;
+      for(i = 1; i < 2; i++){
+            dp = opendir(path);
+            if(dp == NULL)
+              continue;
+            while((dir = readdir(dp)) != NULL){
+                if (strcmp(dir->d_name, ".") == 0 || strcmp(dir->d_name, "..") == 0 )
+                    continue;
+                
+                
+              if(dir->d_type == DT_REG){
+                    fileCount++;
+              }
+              if(dir->d_type == DT_DIR)
+                    dirCount++;
+                
+            }
+          
+          char *basec, *bname;
+                       
+         basec = strdup(path);
+         bname = gnu_basename(basec);
+           
+          
+         printf("Directorio %s contiene: %d Carpetas y %d Archivos\n", bname, dirCount, fileCount);
+          fprintf (fp, "Directorio %s contiene: %d Carpetas y %d Archivos\n", bname, dirCount, fileCount);
+      }
+
+    closedir(dp);
+}
+
+int ContDir(const char *name, int margen, FILE* fp, int carpetas, int archivos)
+{
+    DIR* dirActual;
+    struct dirent *entry;
+    //int carpetas = 0, archivos = 0;
+    char path[1024];
+    
+
+    if (!(dirActual = opendir(name)))
+        return 0;
+
+    while ((entry = readdir(dirActual)) != NULL)
+    {
+        
+        if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0 )
+            continue;
+        
+        
+        if (entry->d_type == DT_DIR) {
+            
+            snprintf(path, sizeof(path), "%s/%s", name, entry->d_name); // concatena la ruta a la subcarpeta
+            //printf("%s\n", entry->d_name); // imprime el nombre de la carpeta actual por consola
+
+            contar(path, margen + 2, fp);
+            ContDir(path, 0, fp, carpetas, archivos);
+            
+        }
+      
+    }
+    
+    closedir(dirActual);
+    
+    
+    return carpetas;
+}
 
 void listdir(const char *name, int margen, FILE* fp)
 {
@@ -68,11 +141,11 @@ void listdir(const char *name, int margen, FILE* fp)
             fprintf(fp, "%s\n", bname); // escribe en el archivo fp el nombre de la carpeta actual
             
             
-        } else {
-            // Archivos
-            printf("%*s- %s\n", margen, "", entry->d_name);
-            fprintf(fp, "%*s- %s\n", margen, "", entry->d_name);
-        }
+        } //else {
+       //     // Archivos
+       //     printf("%*s- %s\n", margen, "", entry->d_name);
+       //     fprintf(fp, "%*s- %s\n", margen, "", entry->d_name);
+        // }
     }
     
     closedir(dirActual);
@@ -123,16 +196,31 @@ void getUserId(FILE* fp)
 
 
 int main(int argc, const char * argv[]) {
+    char* dirParaAnalizar = "/Users/josigna.cp/Documents/USACH/Materias/Semestre 2/ORGANIZACIÓN DE COMPUTADORES/Laboratorio 2/";
     
     FILE* fp = CrearArchivo("/Users/josigna.cp/Documents/USACH/Materias/Semestre 2/ORGANIZACIÓN DE COMPUTADORES/Recorrido.txt");
     
     getUserId(fp);
-    listdir("/Users/josigna.cp/Documents/USACH/Materias/Semestre 2/ORGANIZACIÓN DE COMPUTADORES/Laboratorio 2/", 0, fp);
+    listdir(dirParaAnalizar, 0, fp);
     
     CerrarArchivo(fp);
     
+    /** Archivo Directorio.txt */
+    
+    fp = CrearArchivo("/Users/josigna.cp/Documents/USACH/Materias/Semestre 2/ORGANIZACIÓN DE COMPUTADORES/Directorio.txt");
+
+    getUserId(fp);
+    ContDir(dirParaAnalizar, 0, fp, 0, 0);
+
+
+    CerrarArchivo(fp);
     
 
+    
+    
+
+    
+    
     return 0;
 }
 
