@@ -11,19 +11,11 @@
 
 
 
-#include <unistd.h>
-#include <sys/types.h>
 #include <dirent.h>
 #include <stdio.h>
-
-#define _POSIX_SOURCE
-#include <sys/types.h>
 #include <pwd.h>
 #include <unistd.h>
-
-#define _GNU_SOURCE         /* See feature_test_macros(7) */
 #include <string.h>
-
 #include <errno.h>
 
 char *gnu_basename(char *path)
@@ -32,7 +24,7 @@ char *gnu_basename(char *path)
     return base ? base+1 : path;
 }
 
-void checkPermisos(const char* filepath, const char* path)
+void checkPermisos(const char* filepath, const char* path, FILE* fp)
 {
     char *basec, *bname, *bnamePath;
     basec = strdup(filepath);
@@ -41,13 +33,20 @@ void checkPermisos(const char* filepath, const char* path)
     basec = strdup(path);
     bnamePath = gnu_basename(basec);
     
+    int lectura = 0;
+    int escritura = 0;
+    
     
     // Check read access
     int returnval = 0;
     returnval = access(filepath, R_OK);
     
     if (returnval == 0)
-        printf ("%s ubicado en %s tiene permisos de: Lectura .\n", bname, bnamePath);
+    {
+        lectura = 1;
+        //printf ("%s ubicado en %s tiene permisos de: Lectura .\n", bname, bnamePath);
+            
+    }
     else
     {
         if (errno == ENOENT)
@@ -56,21 +55,51 @@ void checkPermisos(const char* filepath, const char* path)
             printf ("%s Read Permission denied.\n", bname);
     }
     
-//    // Check write access
-//    returnval = 0;
-//    returnval = access (filepath, W_OK);
-//    if (returnval == 0)
-//    printf ("\n %s has Write permissions.!\n", bname);
-//    else
-//    {
-//    if (errno == ENOENT)
-//    printf ("%s No such file or directory.\n", bname);
-//    else if (errno == EACCES)
-//    printf ("%s Write Permission denied.\n", bname);
-//    }
+    // Check write access
+    returnval = 0;
+    returnval = access (filepath, W_OK);
+    if (returnval == 0)
+    {
+        // printf ("\n %s has Write permissions.!\n", bname);
+        escritura = 1;
+    }
+    else
+    {
+        if (errno == ENOENT)
+            printf ("%s No such file or directory.\n", bname);
+        else if (errno == EACCES)
+            printf ("%s Write Permission denied.\n", bname);
+    }
+    
+    char* result = bname;
+    
+    strcat(result, " ubicado en ");
+    strcat(result, bnamePath);
+    strcat(result, " tiene permisos de: ");
+    
+    if (lectura == 1)
+    {
+        strcat(result, "Lectura");
+        
+        if (escritura == 1)
+        {
+            strcat(result, ", ");
+        }
+        
+    }
+    
+    if (escritura == 1)
+    {
+        strcat(result, "Escritura");
+    }
+    
+    //printf ("%s ubicado en %s tiene permisos de: Lectura .\n", bname, bnamePath);
+    //printf("%s \n", result);
+    fprintf (fp, "%s \n", result);
+    
 }
 
-void CheckDir(const char* name)
+void CheckDir(const char* name, FILE* fp)
 {
     DIR* dirActual;
     struct dirent *entry;
@@ -94,13 +123,13 @@ void CheckDir(const char* name)
           //printf("%s\n", entry->d_name); // imprime el nombre de la carpeta actual por consola
 
           
-          CheckDir(path);
+          CheckDir(path, fp);
           
       } else if (entry->d_type == DT_REG) {
           char fullPath[1024];
           snprintf(fullPath, sizeof(fullPath), "%s/%s", name, entry->d_name);
           
-          checkPermisos(fullPath, name);
+          checkPermisos(fullPath, name, fp);
       }
 
     }
@@ -294,13 +323,13 @@ int main(int argc, const char * argv[]) {
     
     fp = CrearArchivo("/Users/josigna.cp/Documents/USACH/Materias/Semestre 2/ORGANIZACIÓN DE COMPUTADORES/Archivo.txt");
 
-       getUserId(fp);
-    CheckDir(dirParaAnalizar);
+    getUserId(fp);
+    CheckDir(dirParaAnalizar, fp);
 
 
-       CerrarArchivo(fp);
+    CerrarArchivo(fp);
 
-    
+    printf("Archivos creados con exito.\n");
     
     return 0;
 }
