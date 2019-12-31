@@ -295,12 +295,12 @@ int main(int argc, const char * argv[]) {
     
     char* defaultPath = "./tarea";
     
-    printf("Ingrese ruta a analizar o presione enter para analizar ruta por defecto\n");
+    printf("Ingrese ruta a analizar o ingrese \".\" y enter para analizar ruta por defecto\n");
     scanf("%s", path);
     
     char* dirParaAnalizar = defaultPath;
     
-    if ( strcmp(path, "") )
+    if (strcmp(path, ".") == 0)
     {
         //dirParaAnalizar ="/Users/josigna.cp/Documents/USACH/Materias/Semestre 2/ORGANIZACIÓN DE COMPUTADORES/Laboratorio 2/";
         dirParaAnalizar = defaultPath;

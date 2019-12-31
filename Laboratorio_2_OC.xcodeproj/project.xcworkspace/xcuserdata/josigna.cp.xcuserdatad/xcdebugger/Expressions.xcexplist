@@ -17,6 +17,9 @@
          contextName = "main:main.c">
          <PersistentStrings>
             <PersistentString
+               value = "strcmp(path, &quot;.&quot;)">
+            </PersistentString>
+            <PersistentString
                value = "strcmp(path, &quot;&quot;)">
             </PersistentString>
          </PersistentStrings>
