@@ -3,14 +3,6 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "CheckDir:main.c">
-         <PersistentStrings>
-            <PersistentString
-               value = "entry-&gt;d_name">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
          contextName = "listFilesRecursively:main.c">
          <PersistentStrings>
             <PersistentString
@@ -18,6 +10,22 @@
             </PersistentString>
             <PersistentString
                value = "dp-&gt;d_name">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "main:main.c">
+         <PersistentStrings>
+            <PersistentString
+               value = "strcmp(path, &quot;&quot;)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CheckDir:main.c">
+         <PersistentStrings>
+            <PersistentString
+               value = "entry-&gt;d_name">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -38,6 +46,14 @@
             </PersistentString>
             <PersistentString
                value = "basename(strdup(name))">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "checkPermisos:main.c">
+         <PersistentStrings>
+            <PersistentString
+               value = "strcat(result, bnamePath);">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

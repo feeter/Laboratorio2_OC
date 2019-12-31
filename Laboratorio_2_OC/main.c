@@ -21,17 +21,14 @@
 char *gnu_basename(char *path)
 {
     char *base = strrchr(path, '/');
-    return base ? base+1 : path;
+    return base ? base + 1 : path;
 }
 
-void checkPermisos(const char* filepath, const char* path, FILE* fp)
+void checkPermisos(char* filepath, char* path, FILE* fp)
 {
-    char *basec, *bname, *bnamePath;
-    basec = strdup(filepath);
-    bname = gnu_basename(basec);
-    
-    basec = strdup(path);
-    bnamePath = gnu_basename(basec);
+    char *fileName, *folderName;
+    fileName = gnu_basename(filepath);
+    folderName = gnu_basename(path);
     
     int lectura = 0;
     int escritura = 0;
@@ -44,37 +41,34 @@ void checkPermisos(const char* filepath, const char* path, FILE* fp)
     if (returnval == 0)
     {
         lectura = 1;
-        //printf ("%s ubicado en %s tiene permisos de: Lectura .\n", bname, bnamePath);
-            
     }
     else
     {
         if (errno == ENOENT)
-            printf ("%s No such file or directory.\n", bname);
+            printf ("%s el archivo o directorio no existe.\n", fileName);
         else if (errno == EACCES)
-            printf ("%s Read Permission denied.\n", bname);
+            printf ("%s permiso de lectura denegado.\n", fileName);
     }
     
-    // Check write access
+    // Verificar acceso de escritura
     returnval = 0;
     returnval = access (filepath, W_OK);
     if (returnval == 0)
     {
-        // printf ("\n %s has Write permissions.!\n", bname);
         escritura = 1;
     }
     else
     {
         if (errno == ENOENT)
-            printf ("%s No such file or directory.\n", bname);
+            printf ("%s el archivo o directorio no existe.\n", fileName);
         else if (errno == EACCES)
-            printf ("%s Write Permission denied.\n", bname);
+            printf ("%s permiso de escritura denegado.\n", fileName);
     }
     
-    char* result = bname;
+    char* result = fileName;
     
     strcat(result, " ubicado en ");
-    strcat(result, bnamePath);
+    strcat(result, folderName);
     strcat(result, " tiene permisos de: ");
     
     if (lectura == 1)
@@ -93,9 +87,8 @@ void checkPermisos(const char* filepath, const char* path, FILE* fp)
         strcat(result, "Escritura");
     }
     
-    //printf ("%s ubicado en %s tiene permisos de: Lectura .\n", bname, bnamePath);
     //printf("%s \n", result);
-    fprintf (fp, "%s \n", result);
+    fprintf(fp, "%s \n", result);
     
 }
 
@@ -103,7 +96,6 @@ void CheckDir(const char* name, FILE* fp)
 {
     DIR* dirActual;
     struct dirent *entry;
-    //int carpetas = 0, archivos = 0;
     char path[1024];
 
 
@@ -298,16 +290,45 @@ void getUserId(FILE* fp)
 
 
 int main(int argc, const char * argv[]) {
-    char* dirParaAnalizar = "/Users/josigna.cp/Documents/USACH/Materias/Semestre 2/ORGANIZACIÓN DE COMPUTADORES/Laboratorio 2/";
+    
+    char* path = malloc(10000);
+    
+    char* defaultPath = "./tarea";
+    
+    printf("Ingrese ruta a analizar o presione enter para analizar ruta por defecto\n");
+    scanf("%s", path);
+    
+    char* dirParaAnalizar = defaultPath;
+    
+    if ( strcmp(path, "") )
+    {
+        //dirParaAnalizar ="/Users/josigna.cp/Documents/USACH/Materias/Semestre 2/ORGANIZACIÓN DE COMPUTADORES/Laboratorio 2/";
+        dirParaAnalizar = defaultPath;
+    }
+    else
+    {
+        dirParaAnalizar = path;
+    }
     
     
-    /** Archivo Recorrido.txt */
-    FILE* fp = CrearArchivo("/Users/josigna.cp/Documents/USACH/Materias/Semestre 2/ORGANIZACIÓN DE COMPUTADORES/Recorrido.txt");
     
+    
+    printf("%s", dirParaAnalizar);
+    
+    FILE* fp = NULL;
+    
+    /** Archivo Archivo.txt */
+    
+    fp = CrearArchivo("/Users/josigna.cp/Documents/USACH/Materias/Semestre 2/ORGANIZACIÓN DE COMPUTADORES/Archivo.txt");
+
     getUserId(fp);
-    listdir(dirParaAnalizar, 0, fp);
-    
+    CheckDir(dirParaAnalizar, fp);
+
+
     CerrarArchivo(fp);
+
+    
+
     
     /** Archivo Directorio.txt */
     
@@ -319,15 +340,17 @@ int main(int argc, const char * argv[]) {
 
     CerrarArchivo(fp);
     
-    /** Archivo Archivo.txt */
+    /** Archivo Recorrido.txt */
     
-    fp = CrearArchivo("/Users/josigna.cp/Documents/USACH/Materias/Semestre 2/ORGANIZACIÓN DE COMPUTADORES/Archivo.txt");
-
+    fp = CrearArchivo("/Users/josigna.cp/Documents/USACH/Materias/Semestre 2/ORGANIZACIÓN DE COMPUTADORES/Recorrido.txt");
+    
     getUserId(fp);
-    CheckDir(dirParaAnalizar, fp);
-
-
+    listdir(dirParaAnalizar, 0, fp);
+    
     CerrarArchivo(fp);
+    
+    /**Fin de ejecucion*/
+    
 
     printf("Archivos creados con exito.\n");
     
