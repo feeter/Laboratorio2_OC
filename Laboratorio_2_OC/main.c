@@ -15,6 +15,8 @@
 #include <string.h>
 #include <errno.h>
 
+#include <sys/stat.h>
+
 char *gnu_basename(char *path)
 {
     char *base = strrchr(path, '/');
@@ -295,9 +297,33 @@ int main(int argc, const char * argv[]) {
     
     FILE* fp = NULL;
     
+    /** verificar si carpeta Informacion Existe*/
+    DIR* dir = opendir("./Informacion/");
+    if (dir) {
+        /* Directory exists. */
+        closedir(dir);
+    } else if (ENOENT == errno) {
+        /* Directory does not exist. */
+        
+        int check;
+          char* dirname = "Informacion";
+        
+          check = mkdir(dirname, 0700);
+        
+          // check if directory is created or not
+          if (!check)
+              printf("Carpeta Informacion creado\n");
+          else {
+              printf("Erro al crear carpeta Informacion\n");
+          }
+        
+    } else {
+        /* opendir() failed for some other reason. */
+    }
+    
     /** Archivo Archivo.txt */
     
-    fp = CrearArchivo("./Archivo.txt");
+    fp = CrearArchivo("./Informacion/Archivo.txt");
     
     
     getUserId(fp);
@@ -309,7 +335,7 @@ int main(int argc, const char * argv[]) {
     
     /** Archivo Directorio.txt */
     
-    fp = CrearArchivo("./Directorio.txt");
+    fp = CrearArchivo("./Informacion/Directorio.txt");
 
     getUserId(fp);
     ContDir(dirParaAnalizar, 0, fp, 0, 0);
@@ -319,7 +345,7 @@ int main(int argc, const char * argv[]) {
     
     /** Archivo Recorrido.txt */
     
-    fp = CrearArchivo("./Recorrido.txt");
+    fp = CrearArchivo("./Informacion/Recorrido.txt");
     
     getUserId(fp);
     listdir(dirParaAnalizar, 0, fp);
