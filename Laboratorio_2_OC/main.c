@@ -319,8 +319,9 @@ int main(int argc, const char * argv[]) {
     
     /** Archivo Archivo.txt */
     
-    fp = CrearArchivo("/Users/josigna.cp/Documents/USACH/Materias/Semestre 2/ORGANIZACIÓN DE COMPUTADORES/Archivo.txt");
-
+    fp = CrearArchivo("./Archivo.txt");
+    
+    
     getUserId(fp);
     CheckDir(dirParaAnalizar, fp);
 
@@ -328,11 +329,9 @@ int main(int argc, const char * argv[]) {
     CerrarArchivo(fp);
 
     
-
-    
     /** Archivo Directorio.txt */
     
-    fp = CrearArchivo("/Users/josigna.cp/Documents/USACH/Materias/Semestre 2/ORGANIZACIÓN DE COMPUTADORES/Directorio.txt");
+    fp = CrearArchivo("./Directorio.txt");
 
     getUserId(fp);
     ContDir(dirParaAnalizar, 0, fp, 0, 0);
@@ -342,7 +341,7 @@ int main(int argc, const char * argv[]) {
     
     /** Archivo Recorrido.txt */
     
-    fp = CrearArchivo("/Users/josigna.cp/Documents/USACH/Materias/Semestre 2/ORGANIZACIÓN DE COMPUTADORES/Recorrido.txt");
+    fp = CrearArchivo("./Recorrido.txt");
     
     getUserId(fp);
     listdir(dirParaAnalizar, 0, fp);
